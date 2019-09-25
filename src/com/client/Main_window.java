@@ -33,6 +33,7 @@ import com.client.modules.*;
 import com.client.window.*;
 import javafx.util.Callback;
 
+import java.awt.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,19 +50,116 @@ public class Main_window extends Application{
     private VBox secondarea;
     private VBox conditionarea;
     public static Label tempmaxi;public static Label tempnowi;
-    public static TextArea infomation;
+
     public static ImageView heat_picture;
     public static Socket client;
-    private ObservableList<Data> list_p;
     private List<Integer> selected_ones = new ArrayList();
     private VBox figure_area_=new VBox();
+
+   //大框架
+    private VBox root = new VBox();
+    private VBox top = new VBox();
+    private HBox content = new HBox();
+
+    private AnchorPane title = new AnchorPane();
+    private Button close = new Button();
+    private Button minis = new Button();
+    private Button maxs = new Button();
+    private  Button user = new Button();
+    private  Button downtray = new Button();
+    private Label logo = new Label();
+    private Label tit = new Label("配电柜监测");
+
+    //第一分区
+    private VBox first_area = new VBox();
+    private VBox machine_area = new VBox();
+    private HBox model_area = new HBox();
+    private VBox select_area = new VBox();
+    private ObservableList<Data> list = FXCollections.observableArrayList();
+    private ListView<Data> listview = new ListView<Data>();
+    private Label selected_num =new Label();
+    private HBox m_title_area = new HBox();
+    private Label m_title = new Label("配电柜");
+    private Button m1 = new Button("全局");
+    private Button m2 = new Button("分立");
+    private Label none1 = new Label("");
+    private Label none2 = new Label("");
+    private CheckBox all_cancel = new CheckBox("全选/全不选");
+    private VBox function_area = new VBox();
+    private  Group g_menu = new Group();
+    private VBox function_area_a = new VBox();
+    private VBox function_area_b = new VBox();
+    private VBox function_area_c = new VBox();
+    private VBox function_area_d = new VBox();
+    private Button a1 =new Button("实时温度");
+    private Button a2 =new Button("热力图");
+    private Button a3 =new Button("均温图");
+    private Button a4 =new Button("测试—温度");
+    private Button a5 =new Button("温湿度简易图");
+    private Button b1 =new Button("");
+    private Button b2 =new Button("测试listview");
+    private Button b3 =new Button("参数A");
+    private Button b4 =new Button("参数A");
+    private Button b5 =new Button("参数A");
+    private Button c1 =new Button("参数A");
+    private Button c2 =new Button("参数A");
+    private Button c3 =new Button("参数A");
+    private Button c4 =new Button("参数A");
+    private Button c5 =new Button("参数A");
+    private  Button d2 =new Button("重设");
+    private Button d1 =new Button("概况图");
+    private TitledPane t1 = new TitledPane("温湿度",function_area_a);
+    private TitledPane t2 = new TitledPane("振动", function_area_b);
+    private TitledPane t3 = new TitledPane("噪声", function_area_c);
+    private TitledPane t4 = new TitledPane("数据流", function_area_d);
+    private Accordion menu = new Accordion();
+    private Label menu_title = new Label("功能");
+
+    //第二分区
+    private VBox second_area = new VBox();
+    private VBox figure_area = new VBox();
+    private  HBox figure_tools = new HBox();
+    private Button removeall = new Button("清空");
+    private Button stopall = new Button("停止");
+    private VBox information_area = new VBox();
+    private TextArea information = new TextArea();
+
+    //第三分区
+    private VBox third_area = new VBox();
+    private VBox condition_area = new VBox();
+    private VBox title1 = new VBox();
+    private VBox title2 = new VBox();
+    private VBox content1 = new VBox();
+    private VBox content2 = new VBox();
+    private Label title1l = new Label(""); //数据组一的标题
+    private Label title2l = new Label("");
+    private VBox condition_first = new VBox();
+    private VBox condition_second = new VBox();
+    private Label data1_t = new Label(""); //数据1的类型
+    private Label data2_t = new Label("");
+    private Label data3_t = new Label("");
+    private Label data1_m = new Label("");
+    private Label data2_m = new Label("");
+    private Label data3_m = new Label("");
+    private HBox data1 = new HBox();
+    private HBox data2 = new HBox();
+    private HBox data3 = new HBox();
+    private VBox double_area = new VBox();
+    private  Button connect_set = new Button("设置");
+    private Button connect = new Button("开始连接");
+    private VBox menu_area = new VBox();
+
+    //静态控件和静态变量设置
+    public static TextArea information_public;
 
     public void start(Stage mainstage) {
         main_stage=mainstage;
         mainstage.initStyle(StageStyle.TRANSPARENT);
         DrawLineTest d = new DrawLineTest();
 
-        VBox root = new VBox();
+        //静态控件传递
+        information_public = information;
+
         root.setId("root");
         // 引入样式
         root.getStylesheets().add(Main_window.class.getResource("resources/css/title.css").toString());
@@ -69,23 +167,23 @@ public class Main_window extends Application{
         root.getStylesheets().add(Main_window.class.getResource("resources/css/many.css").toString());
         root.getStylesheets().add(Main_window.class.getResource("resources/css/button.css").toString());
         //顶部
-        VBox top = new VBox();
+
         top.setId("top");
         // 标题栏
-        AnchorPane title = new AnchorPane();
-        Button close = new Button();
+
+
         close.setId("winClose");
         close.setOnMousePressed(event -> {
 
             QuestionExit open = new QuestionExit();
             open.start(new Stage());
         });
-        Button minis = new Button();
+
         minis.setId("winMin");
         minis.setOnMousePressed(event -> {
             main_stage.setIconified(true);
         });
-        Button maxs = new Button();
+
         maxs.setId("winMax");
         maxs.setOnMousePressed(event -> {
 
@@ -97,19 +195,19 @@ public class Main_window extends Application{
                 maxs.setId("winMax_2");
             }
         });
-        Button user = new Button();
+
         user.setId("winUser");
         user.setOnMousePressed(event -> {
                 });
-        Button downtray = new Button();
+
         downtray.setId("winDown");
         downtray.setOnMousePressed(event -> {
             MainTray mt= new MainTray();
             mt.enableTray(main_stage);
         });
-        Label logo = new Label();
+
         logo.setId("logo");
-        Label tit = new Label("配电柜监测");
+
         tit.setId("tit");
         title.getChildren().addAll(close,minis,user,downtray,logo,tit,maxs);
 
@@ -123,20 +221,12 @@ public class Main_window extends Application{
         top.getChildren().add(title);
 
         // 内容
-        HBox content = new HBox();
         content.setId("hbox_content");
-
-        //功能区
-        VBox first_area = new VBox();
+        //第一分区
         first_area.setId("box_first_area");
-
-        VBox machine_area = new VBox();
         machine_area.setId("vbox_machine_area");
-        HBox model_area = new HBox();
-        VBox select_area = new VBox();
 
-        ObservableList<Data> list = FXCollections.observableArrayList();
-        list_p = list;
+
         list.add(new Data("保定1号", "1", "0","green"));
         list.add(new Data("保定2号", "1", "0","green"));
         list.add(new Data("保定3号", "1", "0","green"));
@@ -157,13 +247,13 @@ public class Main_window extends Application{
         list.add(new Data("废弃4号", "0", "0","green"));
         list.add(new Data("废弃5号", "0", "0","green"));
         list.add(new Data("废弃6号", "0", "0","green"));
-        ListView<Data> listview = new ListView<Data>();
+
         //占位符 当listview没有数据时显示占位符
         listview.setPlaceholder(new Label("无数据"));
-        listview.setPrefHeight(300);
+
         listview.prefWidthProperty().bind(select_area.widthProperty());
         //添加一个可观测的列表显示
-        Label selected_num =new Label();
+
         listview.setItems(list);
         listview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -245,19 +335,19 @@ public class Main_window extends Application{
             }});
 
 
-        HBox m_title_area = new HBox();m_title_area.setId("m_title_area");
-        Label m_title = new Label("配电柜");m_title.setId("m_title");
+        m_title_area.setId("m_title_area");
+        m_title.setId("m_title");
         m_title_area.getChildren().add(m_title);
-        Button m1 = new Button("全局");m1.setId("model_m");m1.setOnMousePressed(event -> {
+        m1.setId("model_m");m1.setOnMousePressed(event -> {
             listview.setDisable(true);
         });
-        Button m2 = new Button("分立");m2.setId("model_m");m2.setOnMousePressed(event -> {
+        m2.setId("model_m");m2.setOnMousePressed(event -> {
             listview.setDisable(false);
         });
 
-        Label none1 = new Label("");Label none2 = new Label("");
+
         model_area.getChildren().addAll(m1,m2);
-        CheckBox all_cancel = new CheckBox("全选/全不选");all_cancel.setPrefHeight(30);
+        all_cancel.setPrefHeight(30);
         all_cancel.selectedProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -290,67 +380,62 @@ public class Main_window extends Application{
         });
 
         machine_area.getChildren().addAll(m_title_area,model_area,none1,listview,none2,all_cancel,selected_num);
-        VBox function_area = new VBox();
+
         function_area.setId("box_function_area");
         first_area.getChildren().addAll(function_area,machine_area);
 
-        Group g = new Group();
-        VBox function_area_a = new VBox();function_area_a.getStyleClass().add("function_area_");
-        VBox function_area_b = new VBox();function_area_b.getStyleClass().add("function_area_");
-        VBox function_area_c = new VBox();function_area_c.getStyleClass().add("function_area_");
-        VBox function_area_d = new VBox();function_area_d.getStyleClass().add("function_area_");
-        Button a1 =new Button("实时温度");a1.getStyleClass().add("menu-btn");
-        Button a2 =new Button("热力图");a2.getStyleClass().add("menu-btn");a2.setOnMousePressed(event -> {
+
+        function_area_a.getStyleClass().add("function_area_");
+        function_area_b.getStyleClass().add("function_area_");
+        function_area_c.getStyleClass().add("function_area_");
+        function_area_d.getStyleClass().add("function_area_");
+        a1.getStyleClass().add("menu-btn");
+        a2.getStyleClass().add("menu-btn");a2.setOnMousePressed(event -> {
             a2();
         });
-        Button a3 =new Button("均温图");a3.getStyleClass().add("menu-btn");
-        Button a4 =new Button("测试—温度");a4.getStyleClass().add("menu-btn");
-        Button a5 =new Button("温湿度简易图");a5.getStyleClass().add("menu-btn");
+        a3.getStyleClass().add("menu-btn");
+        a4.getStyleClass().add("menu-btn");
+        a5.getStyleClass().add("menu-btn");
         a4.setOnMousePressed(event -> {a4();});
 
 
         function_area_a.getChildren().addAll(a1,a2,a3,a4,a5);
-        Button b1 =new Button("");b1.getStyleClass().add("menu-btn");
-        Button b2 =new Button("测试listview");b2.getStyleClass().add("menu-btn");b2.setOnMousePressed(event -> {
+        b1.getStyleClass().add("menu-btn");
+        b2.getStyleClass().add("menu-btn");b2.setOnMousePressed(event -> {
         });
-        Button b3 =new Button("参数A");b3.getStyleClass().add("menu-btn");
-        Button b4 =new Button("参数A");b4.getStyleClass().add("menu-btn");
-        Button b5 =new Button("参数A");b5.getStyleClass().add("menu-btn");
+        b3.getStyleClass().add("menu-btn");
+        b4.getStyleClass().add("menu-btn");
+        b5.getStyleClass().add("menu-btn");
         function_area_b.getChildren().addAll(b1,b2,b3,b4,b5);
-        Button c1 =new Button("参数A");c1.getStyleClass().add("menu-btn");
-        Button c2 =new Button("参数A");c2.getStyleClass().add("menu-btn");
-        Button c3 =new Button("参数A");c3.getStyleClass().add("menu-btn");
-        Button c4 =new Button("参数A");c4.getStyleClass().add("menu-btn");
-        Button c5 =new Button("参数A");c5.getStyleClass().add("menu-btn");
+        c1.getStyleClass().add("menu-btn");
+        c2.getStyleClass().add("menu-btn");
+        c3.getStyleClass().add("menu-btn");
+        c4.getStyleClass().add("menu-btn");
+        c5.getStyleClass().add("menu-btn");
         function_area_c.getChildren().addAll(c1,c2,c3,c4,c5);
-        Button d2 =new Button("重设");d2.getStyleClass().add("menu-btn");
-        Button d1 =new Button("概况图");d1.getStyleClass().add("menu-btn");d1.setOnMousePressed(event -> {
+       d2.getStyleClass().add("menu-btn");
+        d1.getStyleClass().add("menu-btn");d1.setOnMousePressed(event -> {
             d1(); });
         function_area_d.getChildren().addAll(d1,d2);
-        TitledPane t1 = new TitledPane("温湿度",function_area_a);
-        TitledPane t2 = new TitledPane("振动", function_area_b);
-        TitledPane t3 = new TitledPane("噪声", function_area_c);
-        TitledPane t4 = new TitledPane("数据流", function_area_d);
 
 
-        Accordion menu = new Accordion();
+
+
+
+
+
         menu.getStyleClass().add("accordion_a");
         menu.getPanes().addAll(t1,t2,t3,t4);
-        g.getChildren().add(menu);
-        Label menu_title = new Label("功能");menu_title.setId("menu_title");
-        function_area.getChildren().addAll(menu_title,g);
+        g_menu.getChildren().add(menu);
+        menu_title.setId("menu_title");
+        function_area.getChildren().addAll(menu_title,g_menu);
 
         //第二分区
-        VBox second_area = new VBox();
-        second_area.setMinWidth(900);
-        second_area.setMinHeight(500);
         second_area.getStyleClass().add("box_second_area");
 
         //图像区
-        VBox figure_area = new VBox();
         figure_area.setAlignment(Pos.TOP_LEFT);
-        figure_area.setMaxWidth(900);
-        figure_area.setMaxHeight(750);
+
         figure_area.getStyleClass().add("box_figure_area");
 
 
@@ -407,7 +492,7 @@ public class Main_window extends Application{
             if (ssy>=0){
                 alligment.setStartY(ssy);alligment.setEndY(ssy);
                 }
-            infomation.setText("fx:"+ssx+" fy:"+ssy);
+            information.setText("fx:"+ssx+" fy:"+ssy);
 
                 }});
         figure_center.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -427,12 +512,12 @@ public class Main_window extends Application{
 
 
         //图像工具栏区
-        HBox figure_tools = new HBox();figure_tools.setId("hbox_figure_tools");
+       figure_tools.setId("hbox_figure_tools");
         figure_tools.prefWidthProperty().bind(figure_area.widthProperty());
-        Button removeall = new Button("清空");removeall.setOnMousePressed(event -> {
+        removeall.setOnMousePressed(event -> {
             d.removeline(polyline);
         });
-        Button stopall = new Button("停止");stopall.setOnMousePressed(event -> {
+        stopall.setOnMousePressed(event -> {
             if (polyline.isVisible()){
             stopall.setText("开始");
             d.stopline(polyline,polyline_stop);
@@ -446,81 +531,58 @@ public class Main_window extends Application{
 
         figure_tools.getChildren().addAll(removeall,stopall);
         //figure_area.getChildren().addAll(figure_center_ext,figure_tools);
-        figure_area_.setMaxWidth(900);figure_area_.setMinWidth(900);
-        figure_area_.setMaxHeight(700);figure_area_.setMinHeight(700);
+
         figure_area.getChildren().addAll(figure_area_,figure_tools);
         //信息区
-        VBox information_area = new VBox();
-        information_area.setMinWidth(900);
-        information_area.setMinHeight(100);
+
+
         information_area.getStyleClass().add("box_figure_area");
-        TextArea info = new TextArea();info.setPrefSize(900,120);
-        info.setId("text_area");
-        info.setText("");
-        info.setEditable(false);
-        information_area.getChildren().add(info);
+
+        information.setId("text_area");
+        information.setText("");
+        information.setEditable(false);
+        information_area.getChildren().add(information);
         second_area.getChildren().addAll(figure_area,information_area);
-        infomation=info;
+
 
         //第三分区
-        VBox third_area = new VBox();
-        third_area.setPrefWidth(155);
-        third_area.setMinHeight(450);
+
+
         //状态区
-        VBox condition_area = new VBox();
-        condition_area.setPrefWidth(155);
-        condition_area.setMinHeight(600);
+
         condition_area.getStyleClass().add("box_condition_area");
-
-        VBox title1 = new VBox();
         title1.getStyleClass().add("vbox_condition_title");
-        VBox title2 = new VBox();
         title2.getStyleClass().add("vbox_condition_title");
-        VBox content1 = new VBox();
         content1.getStyleClass().add("vbox_condition_content");
-        VBox content2 = new VBox();
         content2.getStyleClass().add("vbox_condition_content");
-
-        Label title1l = new Label("温度");
         title1l.getStyleClass().add("third_condition_title_label");
-        Label title2l = new Label("概况");
         title2l.getStyleClass().add("third_condition_title_label");
         title1.getChildren().add(title1l);
         title2.getChildren().add(title2l);
-        VBox condition_this = new VBox();
-        condition_this.getChildren().addAll(title1,content1);
-        condition_this.setId("vbox_condition_this");
-        VBox condition_all = new VBox();
-        condition_all.getChildren().addAll(title2,content2);
-        condition_all.setId("vbox_condition_all");
+        condition_first.getChildren().addAll(title1,content1);
+        condition_first.setId("vbox_condition_this");
+        condition_second.getChildren().addAll(title2,content2);
+        condition_second.setId("vbox_condition_all");
 
-        Label tem_max1 = new Label("峰值  ");Label tem_max2 = new Label("");
-        Label tem_now1 = new Label("当前  ");Label tem_now2 = new Label("");
-        Label tem_ave1 = new Label("平均  ");Label tem_ave2 = new Label("");
-        HBox tem1 = new HBox();tem1.setPrefSize(145,30);
-        HBox tem2 = new HBox();tem2.setPrefSize(145,30);
-        HBox tem3 = new HBox();tem3.setPrefSize(145,30);
-        tem1.getChildren().addAll(tem_max1,tem_max2);
-        tem2.getChildren().addAll(tem_now1,tem_now2);
-        tem3.getChildren().addAll(tem_ave1,tem_ave2);
-        content1.getChildren().addAll(tem1,tem2,tem3);
-        tempmaxi = tem_max2;
-        tempnowi = tem_now2;
-        condition_area.getChildren().addAll(condition_this,condition_all);
+        data1.setPrefSize(145,30);
+        data2.setPrefSize(145,30);
+        data3.setPrefSize(145,30);
+        data1.getChildren().addAll(data1_t,data1_m);
+        data2.getChildren().addAll(data2_t,data2_m);
+        data3.getChildren().addAll(data3_t,data3_m);
+        content1.getChildren().addAll(data1,data2,data3);
+        condition_area.getChildren().addAll(condition_first,condition_second);
 
 
         //双键区
-        VBox double_area = new VBox();double_area.setPrefWidth(155);double_area.setMinHeight(70);
         double_area.getStyleClass().add("box_double_area");
-
-        Button connect_set = new Button("设置");
         connect_set.getStyleClass().add("connect_set");
         connect_set.setOnMousePressed(event -> {
             ConnectSet b = new ConnectSet();
             b.start(new Stage());
         });
 
-        Button connect = new Button("开始连接");
+
         connect.getStyleClass().add("connect");
         connect.setOnMousePressed(event -> {
             if(connect.getText().equals("终止连接")){
@@ -537,16 +599,13 @@ public class Main_window extends Application{
 
         });
         double_area.getChildren().addAll(connect,connect_set);
+
         //菜单区
-        VBox menu_area = new VBox();
         menu_area.getStyleClass().add("box_menu_area");
-
-        third_area.getChildren().addAll(condition_area,double_area,menu_area);third_area.setPrefWidth(155);third_area.setMinHeight(850);
+        third_area.getChildren().addAll(condition_area,double_area,menu_area);
         third_area.getStyleClass().add("box_third_area");
-
         content.getChildren().addAll(first_area,second_area,third_area);
         content.getStyleClass().add("box_content");
-
 
         //初始化
         firstarea = first_area;
@@ -560,6 +619,7 @@ public class Main_window extends Application{
         mainstage.setScene(scene);
         DragUtil.addDragListener(mainstage, top);
         // 显示
+        initialize();
         mainstage.show();
     }
     public void connected_finalize(int what){
@@ -573,6 +633,35 @@ public class Main_window extends Application{
             conditionarea.setDisable(false);
         }
     }
+
+    private void initialize(){
+        Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+        double height = screensize.getHeight()*0.9;
+        double width = height*1.4;
+        double first_area_width =width*0.15;
+        double first_area_height =height*0.9;
+        double second_area_width =width*0.7;
+        double  second_area_height=height*0.9;
+        double third_area_width =width*0.15;
+        double third_area_height =height*0.9;
+        content.setPrefSize(width,height);
+        root.setPrefSize(width,height);
+        //第一分区
+        first_area.setPrefSize(first_area_width,first_area_height);
+        function_area.setPrefSize(first_area_width,first_area_height*0.4);
+        machine_area.setPrefSize(first_area_width,first_area_height*0.6);
+        //第二分区
+        second_area.setPrefSize(second_area_width,second_area_height);
+        figure_area.setPrefSize(second_area_width*0.9,second_area_height*0.8);
+        information_area.setPrefSize(second_area_width*0.9,second_area_height*0.2);
+        //第三分区
+        third_area.setPrefSize(third_area_width,third_area_height);
+        condition_area.setPrefSize(third_area_width,third_area_height*0.6);
+        double_area.setPrefSize(third_area_width,third_area_height*0.13);
+        menu_area.setPrefSize(third_area_width,third_area_height*0.25);
+    }
+
+
     public void tray(){
         MainTray a = new MainTray();
         a.enableTray(main_stage);
@@ -600,7 +689,7 @@ public class Main_window extends Application{
                 nn.getStyleClass().add("box_pane_multi");
                 if (i*a+j+1<=selected_ones.size()){
                     int index = selected_ones.get(i*a+j);
-                    String name=list_p.get(index).getName();
+                    String name=list.get(index).getName();
                     Label nam=new Label(name);
                     Label tem=new Label("温度:  ");
                     Label wet=new Label("湿度:  ");
@@ -626,8 +715,8 @@ public class Main_window extends Application{
             String request_type="heat2picture";
             String machine_numbers="1";
             String machine_name="BaoDing1";
-            String information =time+">"+request_type+">"+machine_numbers+">"+machine_name;
-        new Thread(new Client_Writer(client,information)).start();
+            String message =time+">"+request_type+">"+machine_numbers+">"+machine_name;
+        new Thread(new Client_Writer(client,message)).start();
         //new Thread(new ClientWriteHandlerThread(client,message)).start();
         if(selected_ones.size()==0)
             return;
@@ -642,15 +731,14 @@ public class Main_window extends Application{
         pane.setVgap(a);
         //pane.maxWidthProperty().bind(figure_area_.widthProperty());
         //.pane.maxHeightProperty().bind(figure_area_.heightProperty());
-        pane.setMaxHeight(700);
-        pane.setMaxWidth(900);
+
         for(int i=0;i<a;i++)
             for (int j=0;j<a;j++){
                 VBox nn =new VBox();
                 nn.getStyleClass().add("box_pane_multi");
                 if (i*a+j+1<=selected_ones.size()){
                     int index = selected_ones.get(i*a+j);
-                    String name=list_p.get(index).getName();
+                    String name=list.get(index).getName();
                     Label nam=new Label(name);
                     Image image = new Image("file:D:\\heat2picture\\Inter_test\\final.png");
                     ImageView imageView = new ImageView();
@@ -698,7 +786,7 @@ public class Main_window extends Application{
                 co_x.setVisible(true);
                 alli_bottom.setVisible(true);
                 alli_top.setVisible(true);
-                d.randomline(drawline, tempmaxi,tempnowi,co_x_degree,co_x,xs,infomation,alli_bottom,alli_top);
+                d.randomline(drawline, tempmaxi,tempnowi,co_x_degree,co_x,xs,information,alli_bottom,alli_top);
                 return null; }};
         Task<Void> task_coord = new Task<Void>() {
                 @Override

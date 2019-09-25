@@ -2,20 +2,17 @@
     -fx-background-color:#F7F7F7 ;
     -fx-background-radius: 10.0;
     -fx-padding: 0 0 0 0;
-    -fx-min-width:200;
-    -fx-min-height: 400;
+
     -fx-alignment: "Pos.TOP_CENTER";
 }
 .function_area_{
     -fx-padding: 3 10 3 10;
     -fx-spacing: 3;
     -fx-background-color: #F7F7F7;
-    -fx-min-width:200;
-    -fx-max-height: 600;
+
 }
 #hbox_content{
-    -fx-min-height: 800;
-    -fx-pref-width: 1300;
+
     -fx-padding: 10 10 10 10;
     -fx-background-color: #CCCCCC;
 }
@@ -25,8 +22,6 @@
     -fx-spacing: 10;
     -fx-padding: 0 0 0 0;
     -fx-border-width: 2px;
-    -fx-min-width:200;
-    -fx-min-height: 800;
 }
 #vbox_machine_area{
     -fx-background-color:#F7F7F7 ;//#F7F7F7
@@ -34,14 +29,11 @@
     -fx-spacing: 0;
     -fx-padding: 0 0 0 0;
     -fx-border-width: 2px;
-    -fx-min-width:200;
-    -fx-pref-height: 470;
 }
 
 #m_title_area{
     -fx-alignment: center;
 }
-
 
 /*左侧导航菜单按钮样式*/
 .menu-btn {
@@ -111,8 +103,6 @@ titles-pane > *.content {
 
 .box_pane_multi{
     -fx-background-color: #FF8C00;
-    -fx-pref-height: 200;
-    -fx-pref-width: 200;
     -fx-alignment: center center;
 }
 #box_pane_multi_box{
@@ -122,14 +112,12 @@ titles-pane > *.content {
 #vbox_figure_center{
     -fx-background-color: #FFFFFF;
     -fx-padding: 0 0 0 0;
-    -fx-max-width: 600;
-    -fx-min-height: 400;
+
 }
 #vbox_figure_center_ext{
     -fx-background-color: #FFFFFF;
     -fx-padding: 10 20 20 20;
-    -fx-max-width: 640;
-    -fx-min-height: 420;
+
 }
 #box_first_area_{
 
@@ -150,15 +138,14 @@ titles-pane > *.content {
 }
 #vbox_condition_this{
     -fx-background-color: #E6E6E6;
-    -fx-min-height: 284;
+
 }
 #vbox_condition_all{
     -fx-background-color: #E6E6E6;
-    -fx-min-height: 284;
+
 }
 .vbox_condition_title{
-    -fx-min-height: 30;
-    -fx-pref-width: 145;
+
     -fx-background-color: #E2F2F2;
     -fx-alignment: center;
 }
@@ -168,8 +155,7 @@ titles-pane > *.content {
 }
 
 .vbox_condition_content{
-    -fx-min-height: 255;
-    -fx-pref-width: 145;
+
     -fx-background-color: #B2F2F2;
 }
 
@@ -220,8 +206,7 @@ titles-pane > *.content {
 .connect_set_vbox{
     -fx-padding: 35 0 0 20;
     -fx-spacing: 20;
-    -fx-pref-width: 380;
-    -fx-pref-height: 150;
+
 
 }
 .connect_set_s{
